@@ -15,8 +15,8 @@ public class LandService {
 		this.repository = repository;
 	}
 
-	public String get() {
+	public Lands get() {
 		Lands land = this.repository.findAll().getLast();
-	
-}
+		return land;
+	}
 }

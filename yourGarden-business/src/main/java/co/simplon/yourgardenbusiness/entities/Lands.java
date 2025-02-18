@@ -8,12 +8,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "t_name")
+@Table(name = "t_lands")
 public class Lands {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_land")
+	@Column(name = "id")
 	private Long id;
 	
 	@Column(name = "cadastral_reference")
@@ -27,6 +27,12 @@ public class Lands {
 	
 	@Column(name = "number_of_garden")
 	private String number_of_garden;
+	
+	@Column(name = "land_img")
+	private String imageId;
+	
+	@Column(name = "land_desc")
+	private String description;
 
 	public Long getId() {
 		return id;
