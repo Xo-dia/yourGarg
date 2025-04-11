@@ -36,12 +36,22 @@ public class AccountService {
 
     @Transactional
     public void create(AccountCreate inputs) {
-	String username = inputs.username();
+    String email = inputs.email();
+	String pseudo = inputs.pseudo();
+	
+    // Vérification des doublons
+    if (repos.existsByEmailIgnoreCase(email)) {
+        throw new BadCredentialsException("Email déjà utilisé");
+    }
+    if (repos.existsByPseudo(pseudo)) {
+        throw new BadCredentialsException("Nom d'utilisateur déjà utilisé");
+    }
+	
 	String password = passwordEncoder.encode(inputs.password());
 	Set<Role> roleDefaultValue = roleRepos.findByRoleDefaultTrue()
-		.orElseThrow(() -> new BadCredentialsException(username));
+		.orElseThrow(() -> new BadCredentialsException(pseudo));
 
-	Account entity = new Account(username, password, roleDefaultValue);
+	Account entity = new Account(email, pseudo, password, roleDefaultValue);
 	repos.save(entity);
 	// save roles with setRoles
 	// Set<Role> roles = inputs.roles().stream().map(roleRepos::findByRole)
@@ -49,9 +59,9 @@ public class AccountService {
     }
 
     public AuthInfo authenticate(AccountAuthenticate inputs) {
-	String username = inputs.username();
-	Account account = repos.findAllByUsernameIgnoreCase(username)
-		.orElseThrow(() -> new BadCredentialsException(username));
+	String pseudo = inputs.pseudo();
+	Account account = repos.findAllByPseudoIgnoreCase(pseudo)
+		.orElseThrow(() -> new BadCredentialsException(pseudo));
 
 	// System.out.println(account); => recuperer account, pas contient le roles
 	// applique Lazy loading
@@ -60,10 +70,10 @@ public class AccountService {
 	String row = inputs.password();
 	String encoded = account.getPassword();
 	if (!passwordEncoder.matches(row, encoded)) {
-	    throw new BadCredentialsException(username);
+	    throw new BadCredentialsException(pseudo);
 	}
 
-	String token = jwtProvider.create(username, roles);
+	String token = jwtProvider.create(pseudo, roles);
 	return new AuthInfo(token, roles);
     }
 

@@ -1,8 +1,13 @@
 package co.simplon.yourgardenbusiness.dtos;
 
-public record AccountAuthenticate(String username, String password) {
+public record AccountAuthenticate(String pseudo, String password) {
     @Override
     public String toString() {
-	return "{username=" + username + ", password=[PROTECTED]}";
+	return "{pseudo=" + pseudo + ", password=[PROTECTED]}";
     }
+
+	public String pseudo() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

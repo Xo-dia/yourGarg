@@ -14,9 +14,12 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "t_accounts")
 public class Account extends AbstractEntity {
+	
+	@Column(name = "email")
+	private String email;
 
-    @Column(name = "username")
-    private String username;
+    @Column(name = "pseudo")
+    private String pseudo;
 
     @Column(name = "password")
     private String password;
@@ -32,18 +35,19 @@ public class Account extends AbstractEntity {
 	// ORM
     }
 
-    public Account(String username, String password, Set<Role> roles) {
-	this.username = username;
+    public Account(String email, String pseudo, String password, Set<Role> roles) {
+    this.email = email;
+	this.pseudo = pseudo;
 	this.password = password;
 	this.roles = new HashSet<Role>(roles);
     }
 
-    public String getUsername() {
-	return username;
+    public String getPseudo() {
+	return pseudo;
     }
 
-    public void setUsername(String username) {
-	this.username = username;
+    public void setPseudo(String pseudo) {
+	this.pseudo = pseudo;
     }
 
     public String getPassword() {
@@ -61,7 +65,7 @@ public class Account extends AbstractEntity {
     // roles.size
     @Override
     public String toString() {
-	return "{username=" + username + ", password=[PROTECTED]" + ", roles=LAZY_LOADING}";
+	return "{pseudo=" + pseudo + ", password=[PROTECTED]" + ", roles=LAZY_LOADING}";
     }
 }
 
